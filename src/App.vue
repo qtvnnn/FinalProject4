@@ -35,21 +35,27 @@ body {
   margin: 0px !important;
   padding: 0px !important;
   height: 100vh !important;
+  background: #393a3d !important;
 }
 
 @font-face {
   font-family: "MISA-Regular";
-  src: url("./assets/font/GoogleSans-Regular.otf") format("opentype");
+  src: url("./assets/font/notosans-regular.2cb88a13.woff2") format("opentype");
 }
 
 @font-face {
   font-family: "MISA-Bold";
-  src: url("./assets/font/GoogleSans-Bold.otf") format("opentype");
+  src: url("./assets/font/notosans-bold.3ede5aff.woff2") format("opentype");
 }
 
 @font-face {
   font-family: "MISA-Italic";
-  src: url("./assets/font/GoogleSans-Italic.otf") format("opentype");
+  src: url("./assets/font/notosans-italic.1c1aaac9.woff2") format("opentype");
+}
+
+@font-face {
+  font-family: "MISA-SemiBold";
+  src: url("./assets/font/notosans-semibold.df3e6dc4.woff2") format("opentype");
 }
 
 ::-webkit-scrollbar {

@@ -447,6 +447,7 @@ export default {
 .content-header {
   height: 50px;
   width: 100%;
+  background: #f4f5f6;
 }
 
 .btn-select {
@@ -723,7 +724,7 @@ export default {
   margin: 0px 0px 0px 15px;
   padding: 6px 30px 6px 30px;
 }
-.modal-style{
+.modal-style {
   cursor: default;
 }
 </style>

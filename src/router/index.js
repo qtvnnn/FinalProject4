@@ -20,19 +20,19 @@ const routes = [{
         // which is lazy-loaded when the route is visited.
         component: () => import( /* webpackChunkName: "about" */ '../views/Report.vue')
     }, {
-        path: '/shop',
-        name: 'Shop',
+        path: '/sell',
+        name: 'Sell',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () => import( /* webpackChunkName: "about" */ '../views/Shop.vue')
     }, {
-        path: '/system',
-        name: 'System',
+        path: '/invoice',
+        name: 'Invoice',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import( /* webpackChunkName: "about" */ '../views/System.vue')
+        component: () => import( /* webpackChunkName: "about" */ '../views/Invoice.vue')
     },
     {
         path: '/dictionary/customer',

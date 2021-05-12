@@ -1,114 +1,153 @@
 .body-left {
     background-color: #ffffff;
-    width: 200px;
+    width: 178px;
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
 .body-left .sidebar {
-    height: 50px;
+    height: 48px;
     display: flex;
+    background-color: #38393d;
+    align-items: center;
+    justify-content: center;
 }
 
 .body-left .sidebar .toggle {
-    width: 50px;
-    height: 50px;
-    background-image: url('../img/toggle.png');
-    background-repeat: no-repeat;
-    background-size: 22px;
-    background-position: 18px center;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -424px -86px;
 }
 
-.body-left .sidebar .logo {
-    width: 138px;
-    height: 50px;
-    background-image: url('../img/cukcuk-logo.png');
-    background-size: 126px;
-    background-repeat: no-repeat;
-    background-position: 0px 9px;
+.body-left .sidebar .logo .img-icon {
+    height: 32px;
 }
 
 .body-left .menu {
     position: relative;
     flex: 1;
-    background-color: #ffffff;
+    background-color: #393a3d;
+    padding-top: 14px;
 }
 
 .body-left .menu .menu-item {
+    line-height: 42px;
+    height: 42px;
+    border-left: 6px solid transparent;
+    padding-left: 8px;
+    color: #fff;
+    position: relative !important;
     display: flex;
-    align-items: center;
     cursor: pointer;
-    color: black;
     text-decoration: none;
 }
 
 .body-left .menu .menu-item:hover {
-    background-color: #e9e9e9;
+    background-color: #616164;
 }
 
 .body-left .menu .menu-item:focus {
-    background: #019160 !important;
-    color: #ffffff !important; 
+    background: #616164 !important;
+    color: #ffffff !important;
 }
 
 .body-left .menu .menu-item .icon {
-    width: 50px;
-    height: 45px;
-    background-repeat: no-repeat;
-    background-size: 22px;
-    background-position: 18px center;
+    width: 24px;
+    height: 24px;
+}
+
+.body-left .menu .menu-item .icon-item-contain {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
 }
 
 .body-left .menu .menu-item .item-name {
-    width: 150px;
+    font-family: "MISA-Regular" !important;
+    font-size: 13px;
 }
 
 .body-left .menu .menu-item .icon.overview {
-    background-image: url('../icon/dashboard.png');
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -30px -1628px;
+}
 
+.body-left .menu .menu-item .icon.cash {
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -73px -1628px;
+}
+
+.body-left .menu .menu-item .icon.deposits {
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -117px -1628px;
+}
+
+.body-left .menu .menu-item .icon.list-purchase {
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -161px -1628px;
+}
+
+.body-left .menu .menu-item .icon.list-sell {
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -204px -1628px;
+}
+
+.body-left .menu .menu-item .icon.invoice {
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -249px -1628px;
+}
+
+.body-left .menu .menu-item .icon.warehouse {
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -291px -1628px;
+}
+
+.body-left .menu .menu-item .icon.tools {
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -336px -1628px
+}
+
+.body-left .menu .menu-item .icon.assets {
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -378px -1630px
+}
+
+.body-left .menu .menu-item .icon.tax {
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -423px -1630px
+}
+
+.body-left .menu .menu-item .icon.price {
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -467px -1628px
+}
+
+.body-left .menu .menu-item .icon.general {
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -510px -1628px
+}
+
+.body-left .menu .menu-item .icon.budget {
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -378px -1659px
 }
 
 .body-left .menu .menu-item .icon.report {
-    background-image: url('../icon/report.png');
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -547px -1628px
 }
 
-.body-left .menu .menu-item .icon.purchase {
-    background-image: url('../icon/dashboard.png');
-}
-
-.body-left .menu .menu-item .icon.list-customer {
-    background-image: url('../icon/dic-employee.png');
-}
-
-.body-left .menu .menu-item .icon.list-employee {
-    background-image: url('../icon/dic-employee.png');
-}
-
-.body-left .menu .menu-item .icon.setting {
-    background-image: url('../icon/setting.png');
+.body-left .menu .menu-item .icon.financial-analysis {
+    background: url(../img/Sprites.64af8f61.svg) no-repeat -204px -1664px
 }
 
 .body-right {
     position: absolute;
-    left: 201px;
+    left: 178px;
     top: 0;
     right: 0;
     bottom: 0;
-    border-left: 1px solid #bbbbbb;
+    background: #fff;
 }
 
 .body-right .header {
     background-color: #ffffff;
     width: 100%;
-    height: 50px;
-    border-bottom: 1px solid #bbbbbb;
+    height: 48px;
 }
 
 .body-right .content {
     background-color: #ffffff;
     position: absolute;
-    top: 51px;
+    top: 48px;
     right: 0;
     bottom: 0;
     left: 0;
