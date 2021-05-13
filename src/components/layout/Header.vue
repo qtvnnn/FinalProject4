@@ -2,35 +2,31 @@
   <div class="header">
     <div class="header-left">
       <div class="header-title">
-        <span class="header-title-text">Lập kế hoạch thu</span>
-        <font-awesome-icon class="header-title-icon" icon="question-circle" />
-        <!-- <div class="dropdown">
-          <button
-            class="btn btn-default dropdown-toggle btn-select btn-list-restaurant"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Nhà hàng biển đông
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Kho tổng</a>
-            <a class="dropdown-item" href="#">Đại dương xanh</a>
-            <a class="dropdown-item" href="#">Nhà hàng biển đông</a>
-            <a class="dropdown-item" href="#">Wine house</a>
+        <div class="icon overview"></div>
+        <span class="header-title-text">CÔNG TY CỔ PHẦN MISA</span>
+        <div class="icon chevron"></div>
+        <div class="tooltip-content">
+          <div class="header-current-db">
+            <div class="icon-header-current-db"></div>
+            <div class="header-current-db-name">DC-02</div>
           </div>
-        </div> -->
+        </div>
       </div>
     </div>
     <div class="header-right">
       <div class="account">
-        <div class="account-name">
-          <span>Nguyễn Văn Mạnh</span>
+        <div class="icon category"></div>
+        <div class="icon setting"></div>
+        <div class="icon chat"></div>
+        <div class="icon simple-question"></div>
+        <div class="icon bell"></div>
+        <div class="account-info">
+          <div class="account-info-contain">
+            <div class="user-ava"></div>
+            <span class="user-name">Nguyễn Quang Minh</span>
+            <div class="icon account-chevron"></div>
+          </div>
         </div>
-        <div class="account-setting"></div>
-        <div class="avatar"></div>
       </div>
     </div>
   </div>

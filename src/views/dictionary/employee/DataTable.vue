@@ -3,17 +3,15 @@
     <BaseLoading :showLoading="isLoading" />
     <div class="content-header">
       <div class="content-header-left">
-        <span class="menu-item-selected">Danh sách nhân viên</span>
+        <span class="menu-item-selected">Nhân viên</span>
       </div>
       <div class="content-header-right">
         <a
-          class="btn btn-primary btn-add-employee"
-          href="#"
+          class="btn btn-add-employee"
           role="button"
           v-on:click="btnAddOnClick"
         >
-          <div class="icon icon-add-employee"></div>
-          <div class="item-name">Thêm nhân viên</div>
+          <div class="item-name">Thêm</div>
         </a>
 
         <div class="alert alert-success alertToggleData" id="alert">
@@ -23,81 +21,19 @@
       </div>
     </div>
     <div class="customer-filter">
-      <div class="customer-filter-left">
-        <div class="input-group input-filter">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">
-              <div class="icon icon-search"></div>
-            </span>
-          </div>
+      <div class="customer-filter-left"></div>
+      <div class="customer-filter-right">
+        <div class="input-search">
           <input
             type="text"
-            class="form-control inputbox-filter"
-            placeholder="Tìm kiếm nhân viên"
+            class="txtInput-search"
             aria-label="Username"
             aria-describedby="basic-addon1"
             v-on:keyup.13="filterInput($event)"
+            placeholder="Tìm theo mã, tên nhân viên"
           />
+          <div class="icon icon-input-search"></div>
         </div>
-        <div class="select-filter-department">
-          <div class="dropdown">
-            <button
-              class="btn btn-default dropdown-toggle btn-select btn-list-department"
-              type="button"
-              id="dropdownMenuButtonDepartment"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Tất cả phòng ban
-            </button>
-            <div
-              class="dropdown-menu menu-department"
-              aria-labelledby="dropdownMenuButtonDepartment"
-            >
-              <a
-                class="dropdown-item selectDepartment"
-                v-for="department in departments"
-                :key="department.DepartmentId"
-                :id="department.DepartmentId"
-                v-on:click="
-                  OnClick(department.DepartmentName, department.DepartmentId)
-                "
-                href="#"
-                >{{ department.DepartmentName }}</a
-              >
-            </div>
-          </div>
-        </div>
-        <div class="select-filter-position">
-          <div class="dropdown">
-            <button
-              class="btn btn-default dropdown-toggle btn-select btn-list-position"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Tất cả vị trí
-            </button>
-            <div
-              class="dropdown-menu menu-position"
-              aria-labelledby="dropdownMenuButton"
-            >
-              <a
-                class="dropdown-item selectPosition"
-                v-for="position in positions"
-                :key="position.PositionId"
-                :id="position.PositionId"
-                href="#"
-                >{{ position.PositionName }}</a
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="customer-filter-right">
         <a class="btn btn-reset-filter" href="#" v-on:click="btnResetTable">
           <div class="icon icon-reset-filter"></div>
         </a>
@@ -445,7 +381,7 @@ export default {
 
 <style scoped>
 .content-header {
-  height: 50px;
+  height: 74px;
   width: 100%;
   background: #f4f5f6;
 }
@@ -455,7 +391,6 @@ export default {
 }
 
 .content-header-left {
-  height: 50px;
   float: left;
   padding-left: 20px;
   display: flex;
@@ -463,24 +398,84 @@ export default {
 }
 
 .content-header-left .menu-item-selected {
-  font-size: 25px;
-  font-weight: bold;
+  font-size: 24px;
+  font-family: "MISA-Bold" !important;
+  color: #111;
+  padding-top: 22px;
 }
 
 .content-header-right {
-  height: 50px;
   float: right;
-  padding-right: 15px;
   display: flex;
   align-items: center;
+  padding-top: 22px;
 }
 
 .content-header-right .btn-add-employee {
-  background-color: #01b075;
+  background-color: #2ca01c;
+  color: #fff;
+  padding: 8px 14px 8px 20px;
+  height: 36px;
+  border-radius: 30px 30px 30px 30px;
+  border: 1px solid transparent;
+}
+
+.content-header-right .btn-add-employee .item-name {
+  font-family: "MISA-SemiBold" !important;
+  position: relative;
+  color: inherit;
   display: flex;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  font-size: 13px;
+  justify-content: center;
   align-items: center;
-  border-color: #01b075;
-  color: white;
+}
+
+.content-header-right .btn-add-employee:hover {
+  background-color: #35bf22;
+}
+
+.icon.arrow-up {
+  width: 16px;
+  height: 16px;
+  margin: 0 10px;
+  background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -848px -359px;
+}
+
+.icon.icon-input-search {
+  width: 16px;
+  height: 16px;
+  margin: 0 10px;
+  background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -992px -360px;
+  cursor: pointer;
+  position: absolute;
+  left: auto;
+  right: 5px;
+  border-right: 0;
+  padding-left: 3px;
+  margin-right: 4px;
+}
+
+.input-search {
+  display: flex;
+  width: 240px;
+  align-items: flex-start;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+}
+
+.input-search .txtInput-search {
+  font-size: 13px;
+  height: 32px;
+  color: inherit;
+  position: relative;
+  padding: 6px 10px;
+  border-radius: 2px;
+  border: 1px solid #babec5;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .content-header-right .btn-add-employee .icon-add-employee {
@@ -493,9 +488,8 @@ export default {
 }
 
 .customer-filter {
-  height: 50px;
+  height: 72px;
   width: 100%;
-  border-bottom: 1px solid #bbbbbb;
 }
 
 .customer-filter-left {
@@ -553,24 +547,19 @@ export default {
   display: flex;
   align-items: center;
   float: right;
-  padding-right: 15px;
+  padding-top: 16px;
 }
 
 .customer-filter-right .btn-reset-filter {
   background-color: #ffffff;
-  border-color: #bbbbbb;
+  padding-right: 16px;
 }
 
 .customer-filter-right .btn-reset-filter .icon-reset-filter {
-  width: 20px;
-  height: 20px;
-  background-repeat: no-repeat;
-  background-size: 20px;
-  background-position: center;
-}
-
-.customer-filter-right .btn-reset-filter .icon-reset-filter {
-  background-image: url("../../../assets/icon/refresh.png");
+  width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -1097px -88px;
 }
 
 .data-table {
@@ -578,7 +567,7 @@ export default {
   right: 4px;
   left: -2px;
   bottom: 60px;
-  top: 100px;
+  top: 146px;
   overflow-y: auto;
 }
 
