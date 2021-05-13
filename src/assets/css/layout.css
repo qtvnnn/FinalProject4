@@ -145,12 +145,13 @@
 }
 
 .body-right .content {
-    background-color: #ffffff;
+    background-color: #f4f5f6;
     position: absolute;
     top: 48px;
-    right: 40px;
+    right: 4px;
     bottom: 0;
     left: 20px;
+    overflow-y: auto;
 
 }
 

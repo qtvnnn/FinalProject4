@@ -40,19 +40,19 @@
       </div>
     </div>
     <div class="data-table">
-      <table class="table table-striped table-hover" width="100%" border="0">
+      <table class="table table-hover" width="100%" border="0">
         <thead>
           <tr>
-            <th>Mã nhân viên</th>
-            <th>Họ và tên</th>
-            <th>Giới tính</th>
-            <th>Ngày sinh</th>
-            <th>Điện thoại</th>
-            <th>Email</th>
-            <th>Chức vụ</th>
-            <th>Phòng ban</th>
-            <th>Mức lương cơ bản</th>
-            <th>Tình trạng công việc</th>
+            <th>MÃ NHÂN VIÊN</th>
+            <th>TÊN NHÂN VIÊN</th>
+            <th>GIỚI TÍNH</th>
+            <th>NGÀY SINH</th>
+            <th>SỐ CMND</th>
+            <th>CHỨC DANH</th>
+            <th>TÊN ĐƠN VỊ</th>
+            <th>SỐ TÀI KHOẢN</th>
+            <th>TÊN NGÂN HÀNG</th>
+            <th>CHI NHÁNH TK NGÂN HÀNG</th>
             <th></th>
           </tr>
         </thead>
@@ -63,17 +63,17 @@
             @dblclick="rowOnClick(employee)"
           >
             <td>{{ employee.EmployeeCode }}</td>
-            <td>{{ employee.FullName }}</td>
-            <td>{{ employee.GenderName }}</td>
+            <td>{{ employee.EmployeeName }}</td>
+            <td>{{ employee.gender }}</td>
             <td>{{ employee.DateOfBirth | formatDate }}</td>
-            <td style="float: right">{{ employee.PhoneNumber }}</td>
-            <td>{{ employee.Email }}</td>
-            <td>{{ employee.PositionName }}</td>
-            <td>{{ employee.DepartmentName }}</td>
-            <td style="float: right">
-              {{ employee.Salary | formatSalary }}
+            <td>{{ employee.IdentityNumber }}</td>
+            <td>{{ employee.EmployeePosition }}</td>
+            <td>{{ employee.IdentityPlace }}</td>
+            <td>{{ employee.BankAccountNumber }}</td>
+            <td>
+              {{ employee.BankName }}
             </td>
-            <td>{{ statusWordString(employee.WorkStatus) }}</td>
+            <td>{{ employee.BankBranchName }}</td>
             <td>
               <div class="btn-delete-employee">
                 <button
@@ -148,43 +148,15 @@
         </tbody>
       </table>
     </div>
-
     <footer class="footer-table">
-      <div class="row">
-        <div class="col-sm footer-table-left">
-          <span class="text-muted">Hiển thị 1-10/1000 nhân viên</span>
-        </div>
-        <div class="col-sm footer-table-center">
-          <div class="paging-left">
-            <a class="btn btn-paging-first" href="#" role="button">
-              <font-awesome-icon icon="angle-double-left" />
-            </a>
-            <a class="btn btn-paging-pre" href="#" role="button">
-              <font-awesome-icon icon="angle-left" />
-            </a>
-          </div>
-          <div class="paging-number">
-            <a class="btn btn-paging-number-item active" href="#" role="button"
-              >1</a
-            >
-            <a class="btn btn-paging-number-item" href="#" role="button">2</a>
-            <a class="btn btn-paging-number-item" href="#" role="button">3</a>
-            <a class="btn btn-paging-number-item" href="#" role="button">4</a>
-          </div>
-          <div class="paging-right">
-            <a class="btn btn-paging-next" href="#" role="button">
-              <font-awesome-icon icon="angle-right" />
-            </a>
-            <a class="btn btn-paging-last" href="#" role="button">
-              <font-awesome-icon icon="angle-double-right" />
-            </a>
-          </div>
-        </div>
-        <div class="col-sm footer-table-right">
-          <span class="text-muted">10 nhân viên/trang</span>
-        </div>
+      <div class="footer-table-left">
+        <span class="text-muted">Hiển thị 1-10/1000 nhân viên</span>
+      </div>
+      <div class="footer-table-right">
+        <span class="text-muted">10 nhân viên/trang</span>
       </div>
     </footer>
+    -->
     <Details
       @closePopup="closePopup"
       :isHide="isHideParent"
@@ -250,7 +222,7 @@ export default {
       this.isLoading = true;
       // get all employee
       const employeesAPI = await axios.get(
-        "http://cukcuk.manhnv.net/v1/employees"
+        "https://localhost:44325/api/v1/Employees"
       );
       // get all department
       const departmentAPI = await axios.get(
@@ -260,6 +232,7 @@ export default {
       const positionAPI = await axios.get(
         "http://cukcuk.manhnv.net/v1/Positions"
       );
+
       this.employees = employeesAPI.data;
       this.departments = departmentAPI.data;
       this.positions = positionAPI.data;
@@ -384,6 +357,10 @@ export default {
   height: 74px;
   width: 100%;
   background: #f4f5f6;
+  padding-right: 30px;
+  position: sticky;
+  top: -1px;
+  z-index: 999;
 }
 
 .btn-select {
@@ -490,6 +467,9 @@ export default {
 .customer-filter {
   height: 72px;
   width: 100%;
+  background: #fff;
+  position: absolute;
+  right: 30px;
 }
 
 .customer-filter-left {
@@ -564,18 +544,36 @@ export default {
 
 .data-table {
   position: absolute;
-  right: 4px;
-  left: -2px;
+  right: 30px;
+  left: 0px;
   bottom: 60px;
   top: 146px;
-  overflow-y: auto;
+  background: #fff;
+  padding: 0px 30px 0px 16px;
+}
+
+.data-table .table-striped {
+  position: relative;
+  right: 30px;
 }
 
 .data-table th {
   position: sticky;
-  top: -1px;
-  left: 2px;
+  top: 72px;
   background-color: white;
+  font-size: 12px;
+  text-transform: uppercase !important;
+  align-items: center;
+  cursor: pointer;
+  padding: 7px 10px 7px 10px;
+  border-right: 1px solid #c7c7c7;
+  border-bottom: 1px solid #c7c7c7;
+  background-color: #eceef1;
+}
+
+.data-table td {
+  border-bottom: 1px solid #c7c7c7;
+  border-right: 1px dotted #c7c7c7;
 }
 
 .data-table tr {
@@ -588,12 +586,13 @@ export default {
 }
 
 .footer-table {
-  position: absolute;
+  position: sticky;
   bottom: 0;
   width: 100%;
-  height: 60px;
-  line-height: 60px;
-  background-color: #f5f5f5;
+  height: 46px;
+  line-height: 46px;
+  background-color: #f4f5f6;
+  top: calc(100% - 46px);
 }
 
 .footer-table .row {
@@ -603,6 +602,9 @@ export default {
 
 .footer-table-left {
   text-align: left;
+  float: left;
+  z-index: 999;
+  position: sticky;
 }
 
 .footer-table-center {
@@ -643,6 +645,9 @@ export default {
 
 .footer-table-right {
   text-align: right;
+  position: relative;
+  right: 30px;
+  background: #fff;
 }
 
 .alertToggleData {
@@ -715,5 +720,12 @@ export default {
 }
 .modal-style {
   cursor: default;
+}
+.footer-paging {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background-color: #fff;
+  display: flex;
 }
 </style>
