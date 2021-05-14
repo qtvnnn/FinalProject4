@@ -8,21 +8,23 @@
 
 .dialog-header {
   position: relative;
-  height: 40px;
-  line-height: 60px;
-  padding-left: 16px;
+  padding-left: 32px;
+  padding-top: 20px;
   display: flex;
   font-size: 23px;
 }
 
 .dialog-header-title {
-  font-weight: 600;
+  font-family: "MISA-Bold";
+  font-size: 24px;
+  color: #111;
+  font-weight: 700;
 }
 
 .dialog-header-close {
   position: absolute;
-  right: 16px;
-  top: 8px;
+  right: 12px;
+  top: 12px;
 }
 .dialog-modal {
   position: fixed;
@@ -32,35 +34,36 @@
   right: 0;
   background-color: black;
   opacity: 0.4;
+  z-index: inherit;
 }
 
 .dialog-content {
   position: fixed;
-  border-radius: 5px;
-  width: 750px;
+  width: 900px;
   background-color: #fff;
-  left: calc(50% - 325px);
-  top: calc(50% - 340px);
+  left: calc(50% - 450px);
+  top: calc(50% - 314px);
+  z-index: inherit;
+  box-shadow: 0 5px 20px 0 rgb(0 0 0 / 10%);
+}
+
+.dialog-content .divide {
+  width: 836px;
+  border-top: 1px solid #e0e0e0;
+  position: relative;
+  left: 32px;
 }
 .dialog-body {
-  padding: 16px 16px 16px 16px;
+  padding: 0px 32px 53px 32px;
+  font-family: "MISA-SemiBold";
 }
 .dialog-footer {
-  display: flex;
   width: 100%;
-  height: 60px;
-  background-color: #e9ebee;
+  height: 77px;
+  background-color: #fff;
   border-radius: 0 0 5px 5px;
-  /* align-items: center; */
-  justify-content: flex-end;
-  padding: 12px 24px;
+  padding: 20px 32px;
   box-sizing: border-box;
-}
-.avatar-employee {
-  padding: 16px;
-}
-.form-input-employee {
-  padding: 16px;
 }
 .avatar-note {
   font-size: 12px;
@@ -112,6 +115,92 @@
 .textAlert {
   margin-right: 20px;
 }
+.cb-checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 2px;
+  border: 1px solid #afafaf;
+}
+.checkbox-input-form {
+  display: flex;
+  align-items: center;
+  padding: 0px 1.5rem 0px 1.5rem;
+}
+.checkbox-input-form span {
+  font-size: 13px;
+  padding-left: 10px;
+}
+
+.icon.icon-close {
+  width: 24px;
+  height: 24px;
+  background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -144px -144px;
+}
+
+.icon.icon-help {
+  margin-right: 6px;
+  width: 24px;
+  height: 24px;
+  background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -89px -144px;
+}
+
+.dialog-body .col-5,
+.dialog-body .col-7,
+.dialog-body .col,
+.dialog-body .col-3 {
+  padding-right: 3px;
+  padding-left: 3px;
+}
+
+.dialog-body .avatar-employee {
+  padding-left: 27px;
+  padding-right: 35px;
+}
+.contain-radio-gender {
+  height: 38px;
+  display: flex;
+  padding-left: 10px;
+}
+
+.contain-radio-gender input {
+  height: 18px;
+  width: 18px;
+}
+.form-control {
+  font-size: 13px !important;
+  font-family: "MISA-Regular";
+}
+.dialog-footer-left {
+  float: left;
+}
+.dialog-footer-right {
+  float: right;
+}
+.btn-detail-dialog {
+  height: 36px;
+  border: 1px solid #8d9096;
+  color: #111;
+  background-color: transparent;
+  border-radius: 3px;
+  font-size: 13px;
+  padding: 8px 20px;
+  background: #fff;
+}
+.btn-detail-dialog:hover {
+  background: #d8d9db;
+}
+.second-right-button {
+  font-family: "MISA-Bold";
+  color: #fff;
+  background: #248b15;
+}
+.second-right-button:hover {
+  background: #35bf22;
+  color: #fff;
+}
+.form-input-employee {
+  padding-right: 26px;
+}
 </style>
 <template>
   <div>
@@ -127,46 +216,47 @@
       </div>
       <div class="dialog-content">
         <div class="dialog-header">
-          <div class="dialog-header-title">THÔNG TIN NHÂN VIÊN</div>
+          <div class="dialog-header-title">Thông tin nhân viên</div>
+          <div class="checkbox-input-form">
+            <input type="checkbox" class="cb-checkbox" />
+            <span>Là khách hàng</span>
+          </div>
+          <div class="checkbox-input-form">
+            <input type="checkbox" class="cb-checkbox" />
+            <span>Là nhà cung cấp</span>
+          </div>
           <div class="dialog-header-close">
             <button type="button" class="close" v-on:click="btnCancelOnClick">
-              <span aria-hidden="true">&times;</span>
+              <div class="icon icon-close"></div>
+            </button>
+            <button type="button" class="close">
+              <div class="icon icon-help"></div>
             </button>
           </div>
         </div>
         <div class="dialog-body">
           <div class="row">
-            <div class="col-4 avatar-employee">
-              <div class="el-avatar"></div>
-              <div class="avatar-note">
-                (Vui lòng chọn ảnh có định dạng <br /><strong
-                  >.jpg, .jpeg, .png, .gif. </strong
-                >)
-              </div>
-            </div>
-            <div class="col-8 form-input-employee">
-              <div class="group-label-info">A. Thông tin chung:</div>
-              <hr class="hr-group-label" />
+            <div class="col-6 avatar-employee">
               <div class="row">
-                <div class="col">
+                <div class="col-5">
                   <label class="label-input">
-                    Mã nhân viên <span class="label-required">(*)</span>
+                    Mã <span class="label-required">*</span>
                   </label>
                   <div class="input-group">
                     <input
                       id="txtEmployeeCode"
                       fieldName="EmployeeCode"
                       required
-                      class="form-control"
+                      class="form-control require-not-null"
                       type="text"
                       v-model="employee.EmployeeCode"
                       disabled
                     />
                   </div>
                 </div>
-                <div class="col">
+                <div class="col-7">
                   <label class="label-input">
-                    Họ và tên <span class="label-required">(*)</span>
+                    Tên <span class="label-required">(*)</span>
                   </label>
                   <div class="input-group">
                     <input
@@ -175,13 +265,55 @@
                       class="form-control require-not-null"
                       type="text"
                       required
-                      v-model="employee.FullName"
+                      v-model="employee.EmployeeName"
                     />
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col">
+                  <label class="label-input">
+                    Đơn vị <span class="label-required">(*)</span>
+                  </label>
+                  <div class="input-group">
+                    <select
+                      id="cbnDepartment"
+                      fieldName="CustomerGroupName"
+                      fieldValue="CustomerGroupId"
+                      api="/api/customergroups"
+                      class="form-control require-not-null"
+                      v-model="employee.DepartmentId"
+                    >
+                      <option
+                        v-for="department in departments"
+                        :key="department.DepartmentId"
+                        :value="department.DepartmentId"
+                      >
+                        {{ department.DepartmentName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <label class="label-input"> Chức danh </label>
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      id="txtPositionName"
+                      fieldName="text"
+                      type="text"
+                      required
+                      v-model="employee.EmployeePosition"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 form-input-employee">
+              <div class="row">
+                <div class="col-5">
                   <label class="label-input">Ngày sinh</label>
                   <div class="input-group">
                     <input
@@ -193,29 +325,53 @@
                     />
                   </div>
                 </div>
-                <div class="col">
-                  <label class="label-input">Giới tính</label>
-                  <div class="input-group">
-                    <select
-                      id="cbxGender"
-                      class="form-control"
-                      v-model="employee.Gender"
-                    >
-                      <option value="1">Nam</option>
-                      <option value="0">Nữ</option>
-                      <option value="2">Không xác định</option>
-                    </select>
+                <div class="col-7">
+                  <label class="label-input"> Giới tính </label>
+                  <div class="contain-radio-gender">
+                    <div class="input-group">
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          name="rd-gender"
+                          type="radio"
+                          id="rd-male"
+                          value="1"
+                          :checked="employee.gender === 1"
+                        />
+                        <label class="form-check-label">Nam</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          name="rd-gender"
+                          type="radio"
+                          id="rd-female"
+                          value="0"
+                          :checked="employee.gender === 0"
+                        />
+                        <label class="form-check-label">Nữ</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          name="rd-gender"
+                          type="radio"
+                          id="rd-other"
+                          value="2"
+                          :checked="employee.gender === 2"
+                        />
+                        <label class="form-check-label">Khác</label>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col">
-                  <label class="label-input">
-                    Số CMTND/ Căn cước <span class="label-required">(*)</span>
-                  </label>
+                <div class="col-7">
+                  <label class="label-input"> Số CMND </label>
                   <div class="input-group">
                     <input
-                      class="form-control require-not-null"
+                      class="form-control"
                       id="txtIdentityNumber"
                       fieldName="text"
                       type="text"
@@ -224,6 +380,20 @@
                     />
                   </div>
                 </div>
+                <div class="col-5">
+                  <label class="label-input">Ngày cấp</label>
+                  <div class="input-group">
+                    <input
+                      id="dtDateOfBirth"
+                      class="form-control"
+                      type="date"
+                      v-model="employee.IdentityDate"
+                      min="1900-01-01"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
                 <div class="col">
                   <label class="label-input">Nơi cấp</label>
                   <div class="input-group">
@@ -237,7 +407,7 @@
                   </div>
                 </div>
               </div>
-              <div class="row">
+              <!-- <div class="row">
                 <div class="col">
                   <label class="label-input">
                     Email <span class="label-required">(*)</span>
@@ -270,10 +440,7 @@
                   </div>
                 </div>
               </div>
-              <div class="group-label-info" style="margin-top: 30px">
-                B. Thông tin công việc:
-              </div>
-              <hr class="hr-group-label" />
+
               <div class="row">
                 <div class="col">
                   <label class="label-input">Vị trí</label>
@@ -359,21 +526,137 @@
                     </select>
                   </div>
                 </div>
+              </div> -->
+            </div>
+          </div>
+
+          <div class="row" style="padding-top: 13px">
+            <div class="col-12">
+              <label class="label-input"> Địa chỉ </label>
+              <div class="input-group">
+                <input
+                  id="txtAddress"
+                  fieldName="FullName"
+                  class="form-control"
+                  type="text"
+                  required
+                  v-model="employee.Address"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-left: 13px">
+            <div class="col-3">
+              <label class="label-input"> ĐT di động </label>
+              <div class="input-group">
+                <input
+                  id="txtPhoneNumber"
+                  fieldName="FullName"
+                  class="form-control"
+                  type="text"
+                  required
+                  v-model="employee.PhoneNumber"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <label class="label-input"> ĐT cố định </label>
+              <div class="input-group">
+                <input
+                  id="txtCellPhone"
+                  fieldName="FullName"
+                  class="form-control"
+                  type="text"
+                  required
+                  v-model="employee.TelephoneNumber"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <label class="label-input"> Email </label>
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  id="txtEmail"
+                  fieldName="Email"
+                  type="email"
+                  required
+                  placeholder="example@domain.com"
+                  v-model="employee.Email"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding-left: 13px">
+            <div class="col-3">
+              <label class="label-input"> Tài khoản ngân hàng </label>
+              <div class="input-group">
+                <input
+                  id="txtBankNumber"
+                  fieldName="FullName"
+                  class="form-control"
+                  type="text"
+                  required
+                  v-model="employee.BankAccountNumber"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <label class="label-input"> Tên ngân hàng </label>
+              <div class="input-group">
+                <input
+                  id="txtBackName"
+                  fieldName="FullName"
+                  class="form-control"
+                  type="text"
+                  required
+                  v-model="employee.BankName"
+                />
+              </div>
+            </div>
+            <div class="col-3">
+              <label class="label-input"> Chi nhánh </label>
+              <div class="input-group">
+                <input
+                  id="txtBankBranch"
+                  fieldName="FullName"
+                  class="form-control"
+                  type="text"
+                  required
+                  v-model="employee.BankBranchName"
+                />
               </div>
             </div>
           </div>
         </div>
+        <div class="divide"></div>
         <div class="dialog-footer">
-          <button
-            id="btnCancel"
-            class="btn btn-default"
-            v-on:click="btnCancelOnClick"
-          >
-            HỦY
-          </button>
-          <button id="btnSave" @click="saveEmployee" class="btn btn-save-form">
-            <i class="far fa-save"></i><span class="btn-text">LƯU</span>
-          </button>
+          <div class="dialog-footer-left">
+            <button
+              id="btnCancel"
+              class="btn btn-default btn-detail-dialog"
+              v-on:click="btnCancelOnClick"
+            >
+              Huỷ
+            </button>
+          </div>
+          <div class="dialog-footer-right">
+            <button
+              id="btnSave"
+              @click="saveEmployee"
+              class="btn btn-save-form btn-detail-dialog"
+            >
+              <i class="far fa-save"></i><span class="btn-text">Cất</span>
+            </button>
+            <button
+              id="btnSave"
+              @click="saveEmployee"
+              class="btn btn-save-form btn-detail-dialog btn second-right-button"
+            >
+              <i class="far fa-save"></i
+              ><span class="btn-text">Cất và thêm</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -409,7 +692,7 @@ export default {
         if (this.requestStatus == 0) {
           //0: thêm mới nhân viên
           const response = await axios.post(
-            "http://cukcuk.manhnv.net/v1/Employees",
+            "https://localhost:44325/api/v1/Employees",
             this.employee
           );
           console.log(response);
@@ -417,7 +700,8 @@ export default {
         } else {
           // sửa nhân viên
           const response = await axios.put(
-            "http://cukcuk.manhnv.net/v1/Employees/" + this.employee.EmployeeId,
+            "https://localhost:44325/api/v1/Employees/" +
+              this.employee.EmployeeId,
             this.employee
           );
           console.log(response);
@@ -439,7 +723,6 @@ export default {
 $(document).ready(function () {
   // set max date in datetimePicker
   $("#dtDateOfBirth").prop("max", getMaxDate());
-
 
   // check input hợp lệ với sự kiện khi tab hoặc click ra khỏi field input
   $(document).on("blur", "#txtFullName", function () {

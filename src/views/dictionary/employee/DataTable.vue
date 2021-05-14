@@ -40,9 +40,12 @@
       </div>
     </div>
     <div class="data-table">
-      <table class="table table-hover" width="100%" border="0">
+      <table class="table" width="100%" border="0">
         <thead>
           <tr>
+            <th class="first-column column-select-all" style="z-index: 2">
+              <input type="checkbox" class="checkbox-select-item" />
+            </th>
             <th>MÃ NHÂN VIÊN</th>
             <th>TÊN NHÂN VIÊN</th>
             <th>GIỚI TÍNH</th>
@@ -53,18 +56,17 @@
             <th>SỐ TÀI KHOẢN</th>
             <th>TÊN NGÂN HÀNG</th>
             <th>CHI NHÁNH TK NGÂN HÀNG</th>
-            <th></th>
+            <th class="last-column">CHỨC NĂNG</th>
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="(employee, index) in employees"
-            :key="employee.EmployeeId"
-            @dblclick="rowOnClick(employee)"
-          >
+          <tr v-for="(employee, index) in employees" :key="employee.EmployeeId">
+            <td class="first-column">
+              <input type="checkbox" class="checkbox-select-item" />
+            </td>
             <td>{{ employee.EmployeeCode }}</td>
             <td>{{ employee.EmployeeName }}</td>
-            <td>{{ employee.gender }}</td>
+            <td>{{ genderString(employee.gender) }}</td>
             <td>{{ employee.DateOfBirth | formatDate }}</td>
             <td>{{ employee.IdentityNumber }}</td>
             <td>{{ employee.EmployeePosition }}</td>
@@ -74,16 +76,35 @@
               {{ employee.BankName }}
             </td>
             <td>{{ employee.BankBranchName }}</td>
-            <td>
-              <div class="btn-delete-employee">
-                <button
-                  type="button"
-                  class="btn btn-danger btn-sm"
-                  data-toggle="modal"
-                  :data-target="'#exampleModal' + index"
-                >
-                  <font-awesome-icon icon="trash" />
-                </button>
+            <td class="column-function last-column">
+              <div class="btn-table-edit" v-on:click="rowOnClick(employee)">
+                <span>Sửa</span>
+              </div>
+              <div class="contain-icon-dropdown">
+                <div class="dropdown">
+                  <div
+                    class="icon dropdown-icon"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  ></div>
+                  <div
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    <a class="dropdown-item" href="#">Nhân bản</a>
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      data-toggle="modal"
+                      :data-target="'#exampleModal' + index"
+                      >Xoá</a
+                    >
+                    <a class="dropdown-item" href="#">Ngừng sử dụng</a>
+                  </div>
+                </div>
               </div>
 
               <!-- Modal -->
@@ -97,24 +118,15 @@
               >
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">
-                        Thông báo
-                      </h5>
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true" class="btn-close"
-                          >&times;</span
-                        >
-                      </button>
-                    </div>
                     <div class="modal-body">
-                      Bạn có chắc muốn xóa những khoản thu đã chọn?
+                      <div class="icon warning-icon-delete"></div>
+                      <span>
+                        Bạn có thực sự muốn xoá nhân viên &lt;{{
+                          employee.EmployeeCode
+                        }}&gt; không?
+                      </span>
                     </div>
+                    <div class="modal-header-line"></div>
                     <div class="modal-footer">
                       <button
                         type="button"
@@ -129,31 +141,44 @@
                         data-dismiss="modal"
                         v-on:click="deleteEmployee(employee.EmployeeId)"
                       >
-                        Xóa
+                        Có
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
             </td>
-            <!-- <td class="btn-delete-employee">
-              <button
-                class="btn btn-danger btn-sm"
-                v-on:click="deleteEmployee(employee.EmployeeId)"
-              >
-                <font-awesome-icon icon="trash" />
-              </button>
-            </td> -->
           </tr>
         </tbody>
       </table>
     </div>
     <footer class="footer-table">
       <div class="footer-table-left">
-        <span class="text-muted">Hiển thị 1-10/1000 nhân viên</span>
+        <span class="text-muted"
+          >Tổng số: <b class="total-record">1041</b> bản ghi</span
+        >
       </div>
       <div class="footer-table-right">
-        <span class="text-muted">10 nhân viên/trang</span>
+        <div class="combobox-footer">
+          <input
+            type="text"
+            class="combobox-text"
+            readonly
+            value="20 bản ghi trên 1 trang"
+          />
+          <div class="btn-dropdown">
+            <div class="icon-btn-dropdown"></div>
+          </div>
+        </div>
+        <span class="previous-paging disableText">Trước</span>
+        <div class="paging-index">
+          <span class="paging-index-item pageSelected">1</span>
+          <span class="paging-index-item">2</span>
+          <span class="paging-index-item">3</span>
+          <span class="paging-index-item">...</span>
+          <span class="paging-index-item">53</span>
+        </div>
+        <span class="next-paging" v-on:click="toTop()">Sau</span>
       </div>
     </footer>
     -->
@@ -182,8 +207,12 @@ export default {
     BaseLoading,
   },
   methods: {
+    toTop() {
+      $(".content").animate({ scrollTop: 0 }, 1);
+    },
     // sự kiện click làm mới dữ liệu trong table
     async btnResetTable() {
+      this.toTop();
       await this.initEmployee();
     },
 
@@ -196,20 +225,23 @@ export default {
         EmployeeCode: await this.getNewEmployeeCode(),
         WorkStatus: 0,
         Gender: 1,
-        DepartmentId: "142cb08f-7c31-21fa-8e90-67245e8b283e",
-        PositionId: "148ed882-32b8-218e-9c20-39c2f00615e8",
+        DepartmentId: "11452b0c-768e-5ff7-0d63-eeb1d8ed8cef",
       };
       console.log(this.selectedEmployee.EmployeeCode);
     },
 
-    // sự kiện ấn đúp chuột để hiện thông tin chi tiết một nhân viên trên dialog input form
+    // sự kiện ấn nút Sửa để hiện thông tin chi tiết một nhân viên trên dialog input form
     rowOnClick(employee) {
       if (employee.DateOfBirth != null) {
         employee.DateOfBirth = this.formatDateToForm(employee.DateOfBirth);
       }
+      if (employee.IdentityDate != null) {
+        employee.IdentityDate = this.formatDateToForm(employee.IdentityDate);
+      }
       this.requestStatus = 1;
       this.selectedEmployee = employee;
       this.isHideParent = false;
+      console.log(employee);
     },
 
     // thay đổi trạng thái đóng mở dialog input form
@@ -219,6 +251,7 @@ export default {
 
     // gọi api load dữ liệu
     async initEmployee() {
+      this.toTop();
       this.isLoading = true;
       // get all employee
       const employeesAPI = await axios.get(
@@ -226,7 +259,7 @@ export default {
       );
       // get all department
       const departmentAPI = await axios.get(
-        "http://cukcuk.manhnv.net/api/Department"
+        "https://localhost:44325/api/v1/Departments"
       );
       // get all position
       const positionAPI = await axios.get(
@@ -243,7 +276,7 @@ export default {
     // sự kiện gọi api xóa một bản ghi nhân viên
     async deleteEmployee(employeeId) {
       const response = await axios.delete(
-        "http://cukcuk.manhnv.net/v1/Employees/" + employeeId
+        "https://localhost:44325/api/v1/Employees/" + employeeId
       );
       console.log(response);
       await this.initEmployee();
@@ -271,16 +304,14 @@ export default {
     },
 
     // fix cứng value của trạng thái công việc
-    statusWordString(statusWord) {
-      switch (statusWord) {
+    genderString(gender) {
+      switch (gender) {
         case 0:
-          return "Đã nghỉ việc";
+          return "Nữ";
         case 1:
-          return "Thực tập sinh";
+          return "Nam";
         case 2:
-          return "Đang thử việc";
-        case 3:
-          return "Nhân viên";
+          return "Khác";
       }
     },
 
@@ -362,25 +393,18 @@ export default {
   top: -1px;
   z-index: 999;
 }
-
-.btn-select {
-  background-color: #ffffff;
-}
-
 .content-header-left {
   float: left;
   padding-left: 20px;
   display: flex;
   align-items: center;
 }
-
 .content-header-left .menu-item-selected {
   font-size: 24px;
   font-family: "MISA-Bold" !important;
   color: #111;
   padding-top: 22px;
 }
-
 .content-header-right {
   float: right;
   display: flex;
@@ -396,7 +420,6 @@ export default {
   border-radius: 30px 30px 30px 30px;
   border: 1px solid transparent;
 }
-
 .content-header-right .btn-add-employee .item-name {
   font-family: "MISA-SemiBold" !important;
   position: relative;
@@ -408,18 +431,15 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 .content-header-right .btn-add-employee:hover {
   background-color: #35bf22;
 }
-
 .icon.arrow-up {
   width: 16px;
   height: 16px;
   margin: 0 10px;
   background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -848px -359px;
 }
-
 .icon.icon-input-search {
   width: 16px;
   height: 16px;
@@ -433,7 +453,6 @@ export default {
   padding-left: 3px;
   margin-right: 4px;
 }
-
 .input-search {
   display: flex;
   width: 240px;
@@ -442,7 +461,6 @@ export default {
   position: relative;
   justify-content: center;
 }
-
 .input-search .txtInput-search {
   font-size: 13px;
   height: 32px;
@@ -454,16 +472,6 @@ export default {
   box-sizing: border-box;
   width: 100%;
 }
-
-.content-header-right .btn-add-employee .icon-add-employee {
-  width: 30px;
-  height: 20px;
-  background-repeat: no-repeat;
-  background-size: 20px;
-  background-position: center;
-  background-image: url("../../../assets/icon/add.png");
-}
-
 .customer-filter {
   height: 72px;
   width: 100%;
@@ -471,7 +479,6 @@ export default {
   position: absolute;
   right: 30px;
 }
-
 .customer-filter-left {
   height: 50px;
   float: left;
@@ -479,49 +486,9 @@ export default {
   align-items: center;
   padding-left: 20px;
 }
-
-.customer-filter-left .input-filter,
-.customer-filter-left .select-filter-department {
-  padding-right: 15px;
-}
-
-.btn-list-department,
-.btn-list-position {
-  border: 1px solid #ced4da;
-  width: 200px;
-  text-align: left;
-}
-
-.select-filter-department .dropdown .dropdown-toggle::after,
-.select-filter-position .dropdown .dropdown-toggle::after {
-  position: relative;
-  float: right;
-  top: 10px;
-}
-
-.menu-department,
-.menu-position {
-  min-width: 200px !important;
-}
-
-.icon-search {
-  width: 20px;
-  height: 20px;
-  background-repeat: no-repeat;
-  background-size: 20px;
-  background-position: center;
-  background-image: url("../../../assets/icon/search.png");
-}
-
-.input-group-text {
-  border-right: none !important;
-  background-color: #ffffff !important;
-}
-
 .inputbox-filter {
   border-left: none !important;
 }
-
 .customer-filter-right {
   height: 50px;
   display: flex;
@@ -529,20 +496,18 @@ export default {
   float: right;
   padding-top: 16px;
 }
-
 .customer-filter-right .btn-reset-filter {
   background-color: #ffffff;
   padding-right: 16px;
 }
-
 .customer-filter-right .btn-reset-filter .icon-reset-filter {
   width: 24px;
   height: 24px;
   padding: 0 6px;
   background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -1097px -88px;
 }
-
 .data-table {
+  height: fit-content;
   position: absolute;
   right: 30px;
   left: 0px;
@@ -551,12 +516,6 @@ export default {
   background: #fff;
   padding: 0px 30px 0px 16px;
 }
-
-.data-table .table-striped {
-  position: relative;
-  right: 30px;
-}
-
 .data-table th {
   position: sticky;
   top: 72px;
@@ -570,21 +529,12 @@ export default {
   border-bottom: 1px solid #c7c7c7;
   background-color: #eceef1;
 }
-
 .data-table td {
-  border-bottom: 1px solid #c7c7c7;
   border-right: 1px dotted #c7c7c7;
 }
-
 .data-table tr {
   cursor: pointer;
 }
-
-.btn-delete-employee {
-  padding: 0px 0px 0px 0px;
-  margin: -6px 0px -6px 0px;
-}
-
 .footer-table {
   position: sticky;
   bottom: 0;
@@ -593,61 +543,27 @@ export default {
   line-height: 46px;
   background-color: #f4f5f6;
   top: calc(100% - 46px);
+  z-index: 2;
 }
-
 .footer-table .row {
   width: 100% !important;
   margin: 0;
 }
-
 .footer-table-left {
   text-align: left;
   float: left;
   z-index: 999;
   position: sticky;
+  width: calc(100% - 552.69px);
+  background: #fff;
 }
-
-.footer-table-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.footer-table-center .paging-number .btn-paging-number-item {
-  background-color: #e9ebee;
-  color: #6c757d;
-  border-radius: 50%;
-  height: 34px;
-  padding-left: 11px;
-  padding-top: 5px;
-  margin: 4px;
-}
-
-.footer-table-center .paging-number .active {
-  background-color: #01b075;
-  color: #ffffff !important;
-}
-
-.btn-paging-first,
-.btn-paging-last,
-.btn-paging-next,
-.btn-paging-pre {
-  color: #6c757d;
-}
-
-.btn-paging-first,
-.btn-paging-last,
-.btn-paging-next,
-.btn-paging-pre {
-  font-size: 21px;
-  font-weight: 600;
-}
-
 .footer-table-right {
   text-align: right;
-  position: relative;
+  position: absolute;
   right: 30px;
   background: #fff;
+  display: flex;
+  padding-right: 60px;
 }
 
 .alertToggleData {
@@ -657,75 +573,223 @@ export default {
   top: 47px;
   right: 15px;
 }
-
 .textAlertData {
   margin-right: 20px;
 }
-
-.modal-title {
-  font-weight: 600;
-}
-.modal-header .close {
-  margin: 0;
-  padding: 0;
-  height: 20px;
-  width: 20px;
-  border-radius: 25px;
-  background: #4d4f5c;
-}
-.btn-close {
-  position: relative;
-  top: -4px;
-  color: white;
-  font-weight: 100;
-}
-
-.modal-header {
-  border-bottom: none;
-}
-
 .modal-footer {
   border-top: none;
+  padding-top: 0px;
+  padding-bottom: 32px;
 }
 .modal-body {
-  font-size: 16px;
+  display: flex;
+  padding: 32px 32px 32px 32px;
 }
 
+.modal-body span {
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  padding-top: 12px;
+}
 .btn-closeNo {
   background: #ffffff;
-  color: #3d3f4e;
-  border: 1px solid #0fa655;
-  border-radius: 4px;
+  color: #111;
+  border: 1px solid #8d9096;
+  border-radius: 3px;
+  position: relative;
+  right: 118px;
 }
 .btn-closeNo:hover {
-  background: #f8f8f8;
+  background: #d2d3d6;
   color: #3d3f4e;
   border-radius: 4px;
   cursor: pointer;
 }
 .btn-confirm-delete {
-  background: #03ae66;
+  background: #2ca01c;
   color: #ffffff;
   border-radius: 4px;
+  position: relative;
+  left: 105px;
 }
 .btn-confirm-delete:hover {
-  background: #02bf70;
+  background: #33b921;
   color: #ffffff;
   border-radius: 4px;
   cursor: pointer;
 }
 .btn-confirm {
   margin: 0px 0px 0px 15px;
-  padding: 6px 30px 6px 30px;
+  padding: 8px 20px;
+  font-size: inherit;
+  font-family: "MISA-SemiBold";
 }
 .modal-style {
   cursor: default;
 }
-.footer-paging {
-  position: sticky;
-  bottom: 0;
-  z-index: 2;
-  background-color: #fff;
+.text-muted {
+  color: #111 !important;
+  padding-left: 20px;
+}
+.disableText {
+  cursor: default !important;
+  color: #9e9e9e;
+}
+.previous-paging {
+  margin-right: 1rem;
+  cursor: pointer;
+}
+.next-paging {
+  margin-left: 1rem;
+  cursor: pointer;
+}
+.paging-index-item {
+  padding: 0rem 0.4rem;
+  cursor: pointer;
+}
+.paging-index .pageSelected {
+  border: 1px solid #e0e0e0;
+  font-weight: 700;
+}
+.combobox-footer {
+  position: relative;
+  top: 7px;
+  height: 50%;
   display: flex;
+  min-height: 32px;
+  border: 1px solid #babec5;
+  border-radius: 2px;
+  margin: 0 16px;
+}
+.combobox-footer .combobox-text {
+  height: 100%;
+  border: none;
+  font-size: 13px;
+
+  padding: 6px 0 6px 12px;
+}
+
+.combobox-footer .btn-dropdown {
+  width: 32px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.combobox-footer .btn-dropdown:hover {
+  background: #e0e0e0;
+}
+.combobox-footer .btn-dropdown .icon-btn-dropdown {
+  width: 16px;
+  height: 16px;
+  background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -560px -359px;
+}
+
+.btn-table-edit {
+  color: #0075c0;
+  padding: 6px 0 6px 16px !important;
+  font-family: "MISA-SemiBold";
+}
+.btn-table-edit span:active {
+  border: 1px solid #0075c0;
+}
+.btn-table-edit span {
+  border: 1px solid #e9ecef0a;
+}
+.dropdown-icon:active {
+  border: 1px solid #0075c0;
+}
+.column-function {
+  display: flex;
+  padding: 5px 10px;
+  justify-content: flex-end;
+}
+
+.column-function .contain-icon-dropdown {
+  padding: 8px 10px !important;
+  position: relative;
+  top: -2px;
+}
+.dropdown-icon {
+  border: 1px solid #e9ecef0a;
+}
+.icon.dropdown-icon {
+  padding: 8px 10px;
+  width: 16px;
+  height: 16px;
+  background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -896px -359px;
+}
+
+.data-table tbody tr:hover {
+  background: #f3f8f8;
+}
+.contain-icon-dropdown .dropdown-menu {
+  transform: translate3d(-88px, 22px, 0px) !important;
+  padding: 2px 1px;
+  border-radius: 2px;
+  min-width: none;
+}
+
+.contain-icon-dropdown .dropdown-item {
+  font-size: 13px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+}
+
+.contain-icon-dropdown .dropdown-item:hover {
+  color: #2ca01c;
+}
+.contain-icon-dropdown .dropdown-item:active {
+  background: #e9ecef;
+}
+.modal-dialog {
+  width: 444px;
+  height: -webkit-fill-available;
+  display: flex;
+  align-items: center;
+}
+
+.modal-dialog .modal-content {
+  border-radius: 3px;
+  box-shadow: 0 5px 20px 0 rgb(0 0 0 / 10%);
+  border: none;
+  align-items: center;
+}
+.icon.warning-icon-delete {
+  width: 48px;
+  height: 48px;
+  background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -592px -456px;
+}
+.modal-header-line {
+  height: 1px;
+  background: #b8bcc3;
+  margin-bottom: 20px;
+  width: calc(100% - 64px);
+}
+
+.checkbox-select-item {
+  width: 18px;
+  height: 18px;
+}
+.first-column {
+  position: absolute;
+  border: none;
+  margin-top: 1px;
+  z-index: 1;
+}
+.column-select-all {
+  display: flex;
+  align-items: center !important;
+  justify-content: center;
+  padding-left: 11.5px !important;
+  border-bottom: none !important;
+}
+.last-column {
+  border-right: none !important;
+  z-index: 1;
 }
 </style>
