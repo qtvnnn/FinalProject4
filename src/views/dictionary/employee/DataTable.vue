@@ -77,32 +77,34 @@
             </td>
             <td>{{ employee.BankBranchName }}</td>
             <td class="column-function last-column">
-              <div class="btn-table-edit" v-on:click="rowOnClick(employee)">
-                <span>Sửa</span>
-              </div>
-              <div class="contain-icon-dropdown">
-                <div class="dropdown">
-                  <div
-                    class="icon dropdown-icon"
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  ></div>
-                  <div
-                    class="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton"
-                  >
-                    <a class="dropdown-item" href="#">Nhân bản</a>
-                    <a
-                      class="dropdown-item"
-                      href="#"
-                      data-toggle="modal"
-                      :data-target="'#exampleModal' + index"
-                      >Xoá</a
+              <div class="contain-btn-funtion">
+                <div class="btn-table-edit" v-on:click="rowOnClick(employee)">
+                  <span>Sửa</span>
+                </div>
+                <div class="contain-icon-dropdown">
+                  <div class="dropdown">
+                    <div
+                      class="icon dropdown-icon"
+                      type="button"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    ></div>
+                    <div
+                      class="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
                     >
-                    <a class="dropdown-item" href="#">Ngừng sử dụng</a>
+                      <a class="dropdown-item" href="#">Nhân bản</a>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        data-toggle="modal"
+                        :data-target="'#exampleModal' + index"
+                        >Xoá</a
+                      >
+                      <a class="dropdown-item" href="#">Ngừng sử dụng</a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -124,6 +126,46 @@
                         Bạn có thực sự muốn xoá nhân viên &lt;{{
                           employee.EmployeeCode
                         }}&gt; không?
+                      </span>
+                    </div>
+                    <div class="modal-header-line"></div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-confirm btn-closeNo"
+                        data-dismiss="modal"
+                      >
+                        Không
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-confirm btn-confirm-delete"
+                        data-dismiss="modal"
+                        v-on:click="deleteEmployee(employee.EmployeeId)"
+                      >
+                        Có
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal 2 -->
+              <div
+                class="modal modal-style fade"
+                :id="'exampleModal' + index"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                      <div class="icon warning-icon-delete"></div>
+                      <span>
+                        Nhân viên đã tồn tại trong hệ thống. vui lòng kiểm tra
+                        lại.
                       </span>
                     </div>
                     <div class="modal-header-line"></div>
@@ -190,7 +232,6 @@
       :showAlertData="showAlertData"
       :requestStatus="requestStatus"
       :departments="departments"
-      :positions="positions"
     />
   </div>
 </template>
@@ -253,22 +294,20 @@ export default {
     async initEmployee() {
       this.toTop();
       this.isLoading = true;
-      // get all employee
-      const employeesAPI = await axios.get(
-        "https://localhost:44325/api/v1/Employees"
-      );
-      // get all department
-      const departmentAPI = await axios.get(
-        "https://localhost:44325/api/v1/Departments"
-      );
-      // get all position
-      const positionAPI = await axios.get(
-        "http://cukcuk.manhnv.net/v1/Positions"
-      );
 
-      this.employees = employeesAPI.data;
-      this.departments = departmentAPI.data;
-      this.positions = positionAPI.data;
+      // get all employee
+      await axios
+        .get("https://localhost:44325/api/v1/Employees")
+        .then((res) => {
+          this.employees = res.data;
+        });
+
+      // get all department
+      await axios
+        .get("https://localhost:44325/api/v1/Departments")
+        .then((res) => {
+          this.departments = res.data;
+        });
 
       this.isLoading = false;
     },
@@ -286,7 +325,7 @@ export default {
     // gọi api lấy mã nhân viên mới
     async getNewEmployeeCode() {
       const newEmployeeCodeAPI = await axios.get(
-        "http://cukcuk.manhnv.net/v1/Employees/NewEmployeeCode"
+        "https://localhost:44325/api/v1/Employees/newEmployeeCode"
       );
       return newEmployeeCodeAPI.data;
     },
@@ -296,9 +335,10 @@ export default {
       this.isLoading = true;
 
       const employeesAPI = await axios.get(
-        `http://cukcuk.manhnv.net/v1/Employees/employeeFilter?pageSize=100&employeeFilter=${valueInput}`
+        `https://localhost:44325/api/v1/Employees/employeeFilter?search=${valueInput}`
       );
-      this.employees = employeesAPI.data.Data;
+      console.log(employeesAPI);
+      this.employees = employeesAPI.data;
 
       this.isLoading = false;
     },
@@ -342,27 +382,6 @@ export default {
       $(".textAlertData").text(alert);
       $(".alertToggleData").css("display", "flex").delay(3000).fadeOut("slow");
     },
-
-    async getEmployeeByDepartment(valueInput, departmentId) {
-      this.isLoading = true;
-
-      const employeesAPI = await axios.get(
-        `http://cukcuk.manhnv.net/v1/Employees/employeeFilter?pageSize=100&employeeFilter=${valueInput}&departmentId=${departmentId}`
-      );
-      this.employees = employeesAPI.data.Data;
-
-      this.isLoading = false;
-    },
-
-    async OnClick(textInput, employeeId) {
-      let text = $(".inputbox-filter").val();
-      if (text) {
-        $("#dropdownMenuButtonDepartment").text(textInput);
-        await this.getEmployeeByDepartment(text, employeeId);
-      } else {
-        alert("Nhập dữ liệu");
-      }
-    },
   },
 
   data() {
@@ -370,7 +389,6 @@ export default {
       isLoading: false,
       employees: [],
       departments: [],
-      positions: [],
       selectedEmployee: {},
       isHideParent: true,
       requestStatus: 0,
@@ -702,9 +720,7 @@ export default {
   border: 1px solid #0075c0;
 }
 .column-function {
-  display: flex;
   padding: 5px 10px;
-  justify-content: flex-end;
 }
 
 .column-function .contain-icon-dropdown {
@@ -776,10 +792,13 @@ export default {
   height: 18px;
 }
 .first-column {
-  position: absolute;
-  border: none;
-  margin-top: 1px;
+  /* position: absolute; */
+  border-top: 1px solid #dee2e6;
+  margin-top: 0px;
   z-index: 1;
+  display: flex;
+  text-align: center;
+  justify-content: center;
 }
 .column-select-all {
   display: flex;
@@ -791,5 +810,10 @@ export default {
 .last-column {
   border-right: none !important;
   z-index: 1;
+}
+.contain-btn-funtion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

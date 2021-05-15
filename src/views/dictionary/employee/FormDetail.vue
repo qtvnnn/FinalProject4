@@ -250,7 +250,6 @@
                       class="form-control require-not-null"
                       type="text"
                       v-model="employee.EmployeeCode"
-                      disabled
                     />
                   </div>
                 </div>
@@ -689,23 +688,33 @@ export default {
       if (count === 0) {
         this.$emit("closePopup", true); //đóng dialog
         this.employee.DateOfBirth = validateDate(this.employee.DateOfBirth); // validate theo maxdate and mindate
+        this.employee.gender = this.getValueGender();
         if (this.requestStatus == 0) {
           //0: thêm mới nhân viên
-          const response = await axios.post(
-            "https://localhost:44325/api/v1/Employees",
-            this.employee
-          );
-          console.log(response);
-          this.showAlertData("Thêm mới nhân viên thành công");
+          await axios
+            .post("https://localhost:44325/api/v1/Employees", this.employee)
+            .then((res) => {
+              console.log(res.data);
+              this.showAlertData("Thêm mới nhân viên thành công");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         } else {
           // sửa nhân viên
-          const response = await axios.put(
-            "https://localhost:44325/api/v1/Employees/" +
-              this.employee.EmployeeId,
-            this.employee
-          );
-          console.log(response);
-          this.showAlertData("Sử thông tin mô nhân viên thành công");
+          await axios
+            .put(
+              "https://localhost:44325/api/v1/Employees/" +
+                this.employee.EmployeeId,
+              this.employee
+            )
+            .then((res) => {
+              console.log(res.data);
+              this.showAlertData("Sử thông tin mô nhân viên thành công");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
         await this.initEmployee(); // cập nhật lại dự liệu
       } else {
@@ -713,6 +722,10 @@ export default {
         showAlert("Vui lòng điền đẩy đủ thông tin quan trọng!");
       }
     },
+
+    getValueGender(){
+      return $("input[name='rd-gender']:checked").val();
+    }
   },
 
   data() {
