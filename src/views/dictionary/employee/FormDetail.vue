@@ -111,10 +111,55 @@
   float: right;
   right: 16px;
   top: -22px;
+  z-index: 1000;
 }
+
+.alertToggleName {
+  position: absolute;
+  align-items: center;
+  float: right;
+  z-index: 1000;
+  background: black;
+  color: white;
+  padding: 2px 5px 2px 5px;
+  right: 35px;
+  top: 63px;
+}
+
+.alertToggleCode {
+  width: max-content;
+  position: absolute;
+  align-items: center;
+  float: right;
+  z-index: 1000;
+  background: black;
+  color: white;
+  padding: 2px 5px 2px 5px;
+  right: -20px;
+  top: 63px;
+}
+
+.alertToggleDepartment {
+  position: absolute;
+  align-items: center;
+  float: right;
+  z-index: 1000;
+  background: black;
+  color: white;
+  padding: 2px 5px 2px 5px;
+  right: 70px;
+  top: 63px;
+}
+
 .textAlert {
-  margin-right: 20px;
+  font-family: "MISA-Regular";
+  /* margin-right: 20px; */
 }
+.textAlertName {
+  font-family: "MISA-Regular";
+  /* margin-right: 20px; */
+}
+
 .cb-checkbox {
   width: 18px;
   height: 18px;
@@ -201,6 +246,13 @@
 .form-input-employee {
   padding-right: 26px;
 }
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #2ca01c;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 </style>
 <template>
   <div>
@@ -252,6 +304,11 @@
                       v-model="employee.EmployeeCode"
                     />
                   </div>
+                  <div class="alertToggleCode" style="display: none">
+                    <span class="textAlertName"
+                      >Mã nhân viên không được để trống</span
+                    >
+                  </div>
                 </div>
                 <div class="col-7">
                   <label class="label-input">
@@ -266,6 +323,9 @@
                       required
                       v-model="employee.EmployeeName"
                     />
+                  </div>
+                  <div class="alertToggleName" style="display: none">
+                    <span class="textAlertName">Tên không được để trống.</span>
                   </div>
                 </div>
               </div>
@@ -291,6 +351,9 @@
                         {{ department.DepartmentName }}
                       </option>
                     </select>
+                  </div>
+                  <div class="alertToggleDepartment" style="display: none">
+                    <span class="textAlertName">Chưa chọn đơn vị.</span>
                   </div>
                 </div>
               </div>
@@ -406,126 +469,6 @@
                   </div>
                 </div>
               </div>
-              <!-- <div class="row">
-                <div class="col">
-                  <label class="label-input">
-                    Email <span class="label-required">(*)</span>
-                  </label>
-                  <div class="input-group">
-                    <input
-                      class="form-control require-not-null"
-                      id="txtEmail"
-                      fieldName="Email"
-                      type="email"
-                      required
-                      placeholder="example@domain.com"
-                      v-model="employee.Email"
-                    />
-                  </div>
-                </div>
-                <div class="col">
-                  <label class="label-input">
-                    Số điện thoại <span class="label-required">(*)</span>
-                  </label>
-                  <div class="input-group">
-                    <input
-                      id="txtPhoneNumber"
-                      fieldName="FullName"
-                      class="form-control require-not-null"
-                      type="text"
-                      required
-                      v-model="employee.PhoneNumber"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col">
-                  <label class="label-input">Vị trí</label>
-                  <div class="input-group">
-                    <select
-                      id="cbxPosition"
-                      fieldName="CustomerGroupName"
-                      fieldValue="CustomerGroupId"
-                      api="/api/customergroups"
-                      class="form-control"
-                      v-model="employee.PositionId"
-                    >
-                      <option
-                        v-for="position in positions"
-                        :key="position.PositionId"
-                        :value="position.PositionId"
-                      >
-                        {{ position.PositionName }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col">
-                  <label class="label-input">Phòng ban</label>
-                  <div class="input-group">
-                    <select
-                      id="cbnDepartment"
-                      fieldName="CustomerGroupName"
-                      fieldValue="CustomerGroupId"
-                      api="/api/customergroups"
-                      class="form-control"
-                      v-model="employee.DepartmentId"
-                    >
-                      <option
-                        v-for="department in departments"
-                        :key="department.DepartmentId"
-                        :value="department.DepartmentId"
-                      >
-                        {{ department.DepartmentName }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <label class="label-input">Mức lương cơ bản</label>
-                  <div class="input-group">
-                    <currency-input
-                      class="form-control"
-                      id="txtSalary"
-                      fieldName="Salary"
-                      type="text"
-                      style="border-right: none"
-                      v-model="employee.Salary"
-                      currency="VND"
-                      locale="de"
-                    />
-                    <div class="input-group-append">
-                      <span
-                        class="input-group-text"
-                        style="border-left: none; background: white"
-                        >(VNĐ)</span
-                      >
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <label class="label-input">Tình trạng công việc</label>
-                  <div class="input-group">
-                    <select
-                      id="cboWorkStatus"
-                      fieldName="CustomerGroupName"
-                      fieldValue="CustomerGroupId"
-                      api="/api/customergroups"
-                      class="form-control"
-                      v-model="employee.WorkStatus"
-                    >
-                      <option value="0" selected>Đã nghỉ việc</option>
-                      <option value="1">Thực tập sinh</option>
-                      <option value="2">Đang thử việc</option>
-                      <option value="3">Nhân viên</option>
-                    </select>
-                  </div>
-                </div>
-              </div> -->
             </div>
           </div>
 
@@ -671,6 +614,7 @@ export default {
     employee: Object,
     initEmployee: Function,
     showAlertData: Function,
+    showAlertDuplicate: Function,
     requestStatus: Number,
     departments: Array,
     positions: Array,
@@ -680,6 +624,9 @@ export default {
     btnCancelOnClick() {
       this.$emit("closePopup", true); //đóng dialog
       removeWarningEmpty(); // bỏ cảnh báo field input
+      $(".alertToggleName").css("display", "none");
+      $(".alertToggleDepartment").css("display", "none");
+      $(".alertToggleCode").css("display", "none");
     },
 
     // tạo mới hoặc sửa thông tin nhân viên
@@ -698,6 +645,7 @@ export default {
               this.showAlertData("Thêm mới nhân viên thành công");
             })
             .catch((err) => {
+              this.showAlertDuplicate(this.employee.EmployeeCode);
               console.log(err);
             });
         } else {
@@ -713,19 +661,28 @@ export default {
               this.showAlertData("Sử thông tin mô nhân viên thành công");
             })
             .catch((err) => {
+              this.showAlertDuplicate(this.employee.EmployeeCode);
               console.log(err);
             });
         }
         await this.initEmployee(); // cập nhật lại dự liệu
       } else {
         warningEmpty(); // cảnh báo các field input chưa hợp lệ
-        showAlert("Vui lòng điền đẩy đủ thông tin quan trọng!");
+        if (!$("#txtFullName").val()) {
+          $(".alertToggleName").css("display", "block");
+        }
+        if (!$("#txtEmployeeCode").val()) {
+          $(".alertToggleCode").css("display", "block");
+        }
+        if (!$("#cbnDepartment").val()) {
+          $(".alertToggleDepartment").css("display", "block");
+        }
       }
     },
 
-    getValueGender(){
+    getValueGender() {
       return $("input[name='rd-gender']:checked").val();
-    }
+    },
   },
 
   data() {
@@ -742,55 +699,81 @@ $(document).ready(function () {
     // họ tên
     if (!$(this).val()) {
       $(this).addClass("input-warning");
-      showAlert("Vui lòng điền họ tên!");
     } else {
       $(this).removeClass("input-warning");
     }
   });
-  $(document).on("blur", "#txtEmail", function () {
-    // email
-    if (isEmailValidate($(this).val())) {
-      $(this).removeClass("input-warning");
-    } else {
+
+  // txtEmployeeCode
+  $(document).on("blur", "#txtEmployeeCode", function () {
+    if (!$(this).val()) {
       $(this).addClass("input-warning");
-      showAlert("Vui lòng điền Email hợp lệ!");
-    }
-  });
-  $(document).on("blur", "#txtPhoneNumber", function () {
-    // số điện thoại
-    if (isPhoneNumberValidate($(this).val())) {
-      $(this).removeClass("input-warning");
     } else {
-      $(this).addClass("input-warning");
-      showAlert("Vui lòng điền số điện thoại hợp lệ!");
-    }
-  });
-  $(document).on("blur", "#txtIdentityNumber", function () {
-    // số cmnd, cccd
-    if (isIdentityNumberValidate($(this).val())) {
       $(this).removeClass("input-warning");
-    } else {
-      $(this).addClass("input-warning");
-      showAlert("Vui lòng điền số CMND không hợp lệ!");
     }
   });
+
+  $(document).on("click", "#cbnDepartment", function () {
+    if (!$(this).val()) {
+      $(this).addClass("input-warning");
+    }
+  });
+
   $(document).on("blur", "#dtDateOfBirth", function () {
     // ngày sinh
     const a = validateDate($(this).val());
     $(this).val(a); //nếu cố tình nhập thời gian vượt quá khoảng min max thì set lại giá trị min hoặc max
   });
-  // $(document).on("blur", "#txtSalary", function () {
-  //   let format = parseFloat(this.value.replace(/,/g, ""))
-  //     .toString()
-  //     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  //   $(this).val(format);
-  // });
-});
 
-// regex
-const emailRe = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const phoneNo = /^\d{10}$/;
-const IdenNo = /^\d{9,12}$/;
+  $(document).on("change", "#cbnDepartment", function () {
+    $(this).removeClass("input-warning");
+  });
+
+  //Họ tên
+  $(document).on("keydown", "#txtFullName", function () {
+    $(this).removeClass("input-warning");
+    $(".alertToggleName").css("display", "none");
+  });
+
+  $("#txtFullName").hover(
+    function () {
+      if (!$(this).val() && $(this).hasClass("input-warning")) {
+        $(".alertToggleName").css("display", "block");
+      }
+    },
+    function () {
+      $(".alertToggleName").css("display", "none");
+    }
+  );
+
+  // mã nhân viên
+  $(document).on("keydown", "#txtEmployeeCode", function () {
+    $(this).removeClass("input-warning");
+    $(".alertToggleCode").css("display", "none");
+  });
+
+  $("#txtEmployeeCode").hover(
+    function () {
+      if (!$(this).val() && $(this).hasClass("input-warning")) {
+        $(".alertToggleCode").css("display", "block");
+      }
+    },
+    function () {
+      $(".alertToggleCode").css("display", "none");
+    }
+  );
+
+  $("#cbnDepartment").hover(
+    function () {
+      if (!$(this).val() && $(this).hasClass("input-warning")) {
+        $(".alertToggleDepartment").css("display", "block");
+      }
+    },
+    function () {
+      $(".alertToggleDepartment").css("display", "none");
+    }
+  );
+});
 
 // đếm field input trống và dữ liệu không hợp lệ
 function countEmpty() {
@@ -798,19 +781,12 @@ function countEmpty() {
   $(document)
     .find(".require-not-null")
     .each(function () {
+      console.log($(this).val());
       if (!$(this).val()) {
         count++;
       }
     });
-  if (!isEmailValidate($("#txtEmail").val())) {
-    count++;
-  }
-  if (!isPhoneNumberValidate($("#txtPhoneNumber").val())) {
-    count++;
-  }
-  if (!isIdentityNumberValidate($("#txtIdentityNumber").val())) {
-    count++;
-  }
+
   return count;
 }
 
@@ -828,39 +804,6 @@ function warningEmpty() {
 // xóa cảnh báo các field input trống
 function removeWarningEmpty() {
   $(document).find(".input-warning").removeClass("input-warning");
-}
-
-// kiểm tra email hợp lệ
-function isEmailValidate(email) {
-  if (!emailRe.test(email)) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
-// kiểm tra số điện thoại hợp lệ
-function isPhoneNumberValidate(phone) {
-  if (!phoneNo.test(phone)) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
-// kiểm tra số cmnd hợp lệ
-function isIdentityNumberValidate(Identity) {
-  if (!IdenNo.test(Identity)) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
-// hiện alert thông báo
-function showAlert(alert) {
-  $(".textAlert").text(alert);
-  $(".alertToggle").css("display", "flex").delay(2000).fadeOut("slow");
 }
 
 // validate range date

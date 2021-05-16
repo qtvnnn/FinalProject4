@@ -70,7 +70,7 @@
             <td>{{ employee.DateOfBirth | formatDate }}</td>
             <td>{{ employee.IdentityNumber }}</td>
             <td>{{ employee.EmployeePosition }}</td>
-            <td>{{ employee.IdentityPlace }}</td>
+            <td>{{ employee.DepartmentName }}</td>
             <td>{{ employee.BankAccountNumber }}</td>
             <td>
               {{ employee.BankName }}
@@ -122,50 +122,10 @@
                   <div class="modal-content">
                     <div class="modal-body">
                       <div class="icon warning-icon-delete"></div>
-                      <span>
+                      <span class="model-messagle">
                         Bạn có thực sự muốn xoá nhân viên &lt;{{
                           employee.EmployeeCode
                         }}&gt; không?
-                      </span>
-                    </div>
-                    <div class="modal-header-line"></div>
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-confirm btn-closeNo"
-                        data-dismiss="modal"
-                      >
-                        Không
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-confirm btn-confirm-delete"
-                        data-dismiss="modal"
-                        v-on:click="deleteEmployee(employee.EmployeeId)"
-                      >
-                        Có
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Modal 2 -->
-              <div
-                class="modal modal-style fade"
-                :id="'exampleModal' + index"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-body">
-                      <div class="icon warning-icon-delete"></div>
-                      <span>
-                        Nhân viên đã tồn tại trong hệ thống. vui lòng kiểm tra
-                        lại.
                       </span>
                     </div>
                     <div class="modal-header-line"></div>
@@ -194,6 +154,32 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Modal 2 -->
+    <div id="alertDuplicate" class="modal modal-style" style="display: none">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="icon warning-icon-delete"></div>
+            <span class="model-messagle-duplicate">
+              Nhân viên &lt;<span id="employeeCodeDuplicate">x</span>&gt; đã tồn
+              tại trong hệ thống. vui lòng kiểm tra lại.
+            </span>
+          </div>
+          <div class="modal-header-line"></div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-confirm btn-confirm-duplicate"
+              v-on:click="closeAlertDuplicate()"
+            >
+              Đồng ý
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <footer class="footer-table">
       <div class="footer-table-left">
         <span class="text-muted"
@@ -230,6 +216,7 @@
       :employee="selectedEmployee"
       :initEmployee="initEmployee"
       :showAlertData="showAlertData"
+      :showAlertDuplicate="showAlertDuplicate"
       :requestStatus="requestStatus"
       :departments="departments"
     />
@@ -266,9 +253,9 @@ export default {
         EmployeeCode: await this.getNewEmployeeCode(),
         WorkStatus: 0,
         Gender: 1,
-        DepartmentId: "11452b0c-768e-5ff7-0d63-eeb1d8ed8cef",
+        DepartmentId: "",
       };
-      console.log(this.selectedEmployee.EmployeeCode);
+      $("#txtEmployeeCode").focus();
     },
 
     // sự kiện ấn nút Sửa để hiện thông tin chi tiết một nhân viên trên dialog input form
@@ -282,7 +269,6 @@ export default {
       this.requestStatus = 1;
       this.selectedEmployee = employee;
       this.isHideParent = false;
-      console.log(employee);
     },
 
     // thay đổi trạng thái đóng mở dialog input form
@@ -297,7 +283,7 @@ export default {
 
       // get all employee
       await axios
-        .get("https://localhost:44325/api/v1/Employees")
+        .get("https://localhost:44325/api/v1/Employees/EmployeesWithDepartment")
         .then((res) => {
           this.employees = res.data;
         });
@@ -380,7 +366,29 @@ export default {
     // hiện alert thông báo
     showAlertData(alert) {
       $(".textAlertData").text(alert);
-      $(".alertToggleData").css("display", "flex").delay(3000).fadeOut("slow");
+      setTimeout(function () {
+        $(".alertToggleData")
+          .css("display", "flex")
+          .delay(4000)
+          .fadeOut("slow");
+      }, 1000);
+    },
+
+    showAlertDuplicate(code) {
+      $(".content").css("overflow", "hidden");
+      $("body").append(
+        `<div id="operacyBody" class="modal-backdrop fade show"></div>`
+      );
+      setTimeout(function () {
+        $("#alertDuplicate").css("display", "block");
+      }, 1000);
+      $("#employeeCodeDuplicate").text(code);
+    },
+
+    closeAlertDuplicate() {
+      $(".content").css("overflow", "");
+      $("#alertDuplicate").css("display", "none");
+      $("#operacyBody").remove();
     },
   },
 
@@ -588,8 +596,8 @@ export default {
   position: absolute;
   display: none;
   align-items: center;
-  top: 47px;
-  right: 15px;
+  top: 13px;
+  right: 115px;
 }
 .textAlertData {
   margin-right: 20px;
@@ -604,12 +612,19 @@ export default {
   padding: 32px 32px 32px 32px;
 }
 
-.modal-body span {
+.modal-body .model-messagle {
   display: flex;
   align-items: center;
   padding-left: 16px;
   padding-top: 12px;
 }
+
+.modal-body .model-messagle-duplicate {
+  align-items: center;
+  padding-left: 16px;
+  padding-top: 12px;
+}
+
 .btn-closeNo {
   background: #ffffff;
   color: #111;
@@ -631,12 +646,21 @@ export default {
   position: relative;
   left: 105px;
 }
-.btn-confirm-delete:hover {
+.btn-confirm-duplicate {
+  background: #2ca01c;
+  color: #ffffff;
+  border-radius: 4px;
+  position: relative;
+  left: 140px;
+}
+.btn-confirm-delete:hover,
+.btn-confirm-duplicate:hover {
   background: #33b921;
   color: #ffffff;
   border-radius: 4px;
   cursor: pointer;
 }
+
 .btn-confirm {
   margin: 0px 0px 0px 15px;
   padding: 8px 20px;
@@ -815,5 +839,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+#alertDuplicate {
+  position: relative;
+  top: -97px;
+  left: -95px;
 }
 </style>

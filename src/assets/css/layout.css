@@ -335,5 +335,6 @@
 }
 
 input:focus {
+    border-color: #2ca01c;
     outline: none;
 }
