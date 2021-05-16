@@ -39,8 +39,14 @@
         </a>
       </div>
     </div>
-    <div class="data-table">
-      <table class="table" width="100%" border="0">
+    <div class="data-table" style="display: -webkit-box">
+      <div class="border-right-table-3"></div>
+      <table
+        class="table"
+        width="100%"
+        border="0"
+        style="width: max-content; background: #fff"
+      >
         <thead>
           <tr>
             <th class="first-column column-select-all" style="z-index: 2">
@@ -153,6 +159,8 @@
           </tr>
         </tbody>
       </table>
+      <div class="border-right-table-1"></div>
+      <div class="border-right-table-2"></div>
     </div>
 
     <!-- Modal 2 -->
@@ -417,6 +425,7 @@ export default {
   padding-right: 30px;
   position: sticky;
   top: -1px;
+  left: 0px;
   z-index: 999;
 }
 .content-header-left {
@@ -500,10 +509,10 @@ export default {
 }
 .customer-filter {
   height: 72px;
-  width: 100%;
+  width: calc(100% - 30px);
   background: #fff;
-  position: absolute;
-  right: 30px;
+  position: sticky;
+  left: 0px;
 }
 .customer-filter-left {
   height: 50px;
@@ -540,7 +549,6 @@ export default {
   bottom: 60px;
   top: 146px;
   background: #fff;
-  padding: 0px 30px 0px 16px;
 }
 .data-table th {
   position: sticky;
@@ -564,12 +572,13 @@ export default {
 .footer-table {
   position: sticky;
   bottom: 0;
+  left: 0;
   width: 100%;
   height: 46px;
   line-height: 46px;
   background-color: #f4f5f6;
   top: calc(100% - 46px);
-  z-index: 2;
+  z-index: 3;
 }
 .footer-table .row {
   width: 100% !important;
@@ -844,5 +853,30 @@ export default {
   position: relative;
   top: -97px;
   left: -95px;
+}
+.border-right-table-1 {
+  width: 25px;
+  height: auto;
+  background: #fff;
+  position: sticky;
+  right: 30px;
+  z-index: 1;
+}
+.border-right-table-2 {
+  width: 30px;
+  height: auto;
+  background: #f4f5f6;
+  position: sticky;
+  right: 0;
+  z-index: 1;
+}
+
+.border-right-table-3 {
+  width: 20px;
+  height: auto;
+  background: #fff;
+  position: sticky;
+  left: 0;
+  z-index: 3;
 }
 </style>

@@ -59,19 +59,16 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+    width: 10px;
+    height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #bbbbbb;
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
+  background: #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #6c757d;
-  border-radius: 10px;
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  background-color: #b8bcc3;
 }
 @import "~bootstrap/dist/css/bootstrap.css";
 </style>
